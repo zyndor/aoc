@@ -13,7 +13,6 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	auto result = 0;
 	std::ifstream file(argv[1]);
 	std::string line;
 

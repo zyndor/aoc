@@ -1,2 +1,2 @@
 #!/bin/sh
-g++ $1 --std=c++17 -Wfatal-errors $CXXFLAGS
+g++ $1 --std=c++17 -Wall -Wfatal-errors $CXXFLAGS

@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 		bool skip = false;
 		for (auto& c : line)
 		{
-			auto n = &c - line.c_str();
+			auto n = size_t(&c - line.c_str());
 			if (c == '\\' && n + 1 < line.size() && [&skip]{
 				bool tmp = !skip;
 				skip = false;

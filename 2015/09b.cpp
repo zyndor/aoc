@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 		char sourceBuffer[64];
 		char targetBuffer[64];
 		uint32_t distance;
-		if (sscanf(line.c_str(), "%64s to %64s = %d", sourceBuffer, targetBuffer, &distance) != 3)
+		if (sscanf(line.c_str(), "%64s to %64s = %u", sourceBuffer, targetBuffer, &distance) != 3)
 		{
 			std::cout << "Failed to parse '" << line << "'" << std::endl;
 			continue;

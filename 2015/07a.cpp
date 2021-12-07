@@ -107,7 +107,8 @@ struct Node: ::UnaryNode
 		state[out] = state.find(in1)->second;
 	}
 };
-};
+
+}
 
 namespace Not
 {
