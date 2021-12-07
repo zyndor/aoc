@@ -1,9 +1,5 @@
-#include <algorithm>
+#include "utils.h"
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdio>
-#include <cassert>
 
 int main(int argc, char** argv)
 {
@@ -13,13 +9,11 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	auto result = 0;
 	std::ifstream file(argv[1]);
-	std::string line;
-	while (std::getline(file, line))
-	{
-	}
+	ReadAllLines(file, [](std::string const& str){
+	});
 
+	auto result = 0;
 	std::cout << result << std::endl;
 
 	return 0;
