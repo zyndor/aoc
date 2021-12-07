@@ -1,9 +1,6 @@
-#include <algorithm>
+#include "utils.h"
 #include <iostream>
-#include <fstream>
 #include <cstring>
-#include <cstdio>
-#include <cassert>
 
 int main(int argc, char** argv)
 {
@@ -14,11 +11,9 @@ int main(int argc, char** argv)
 	}
 
 	std::ifstream file(argv[1]);
-	std::string line;
 
 	int x = 0, y= 0;
-	while (std::getline(file, line))
-	{
+	ReadAllLines(file, [&x, &y](std::string const& line){
 		char buffer[16];
 		int units;
 		if (sscanf(line.c_str(), "%s %d", buffer, &units) != 2)
@@ -39,7 +34,7 @@ int main(int argc, char** argv)
 		{
 			y -= units;
 		}
-	}
+	});
 
 	std::cout << x * y << std::endl;
 

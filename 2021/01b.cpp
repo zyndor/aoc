@@ -1,8 +1,5 @@
-#include <algorithm>
+#include "utils.h"
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdio>
 
 int main(int argc, char** argv)
 {
@@ -13,12 +10,11 @@ int main(int argc, char** argv)
 	}
 
 	std::ifstream file(argv[1]);
-	auto result = 0;
-	std::string line;
+
 	uint32_t samples[4] {};
 	uint32_t readings = 0;
-	while (std::getline(file, line))
-	{
+	uint32_t result = 0;
+	ReadAllLines(file, [&samples, &readings, &result](std::string const& line) {
 		samples[readings] = atoi(line.c_str());
 
 		for (auto s: samples)
@@ -35,7 +31,7 @@ int main(int argc, char** argv)
 			std::copy(samples + 1, samples + 4, samples); 
 		}
 		readings += readings < 3;
-	}
+	});
 
 	std::cout << result << std::endl;
 

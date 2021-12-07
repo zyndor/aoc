@@ -1,9 +1,5 @@
-#include <algorithm>
+#include "utils.h"
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <cstdio>
-#include <cassert>
 
 int main(int argc, char** argv)
 {
@@ -17,10 +13,8 @@ int main(int argc, char** argv)
 	std::string line;
 
 	std::vector<uint32_t> digits;
-
 	uint32_t count = 0;
-	while (std::getline(file, line))
-	{
+	ReadAllLines(file, [&digits, &count](std::string const& line) {
 		digits.resize(std::max(line.size(), digits.size()));
 
 		uint32_t bits = 0;
@@ -31,7 +25,7 @@ int main(int argc, char** argv)
 		}
 
 		++count;
-	}
+	});
 
 	count = (count + 1) / 2;
 	uint32_t gamma = 0;
@@ -43,9 +37,7 @@ int main(int argc, char** argv)
 		epsilon |= (*d < count) << bits;
 		++bits;
 	}
-	std::cout << std::endl;
 
-	std::cout << gamma << ", " << epsilon << std::endl;
 	std::cout << uint64_t(gamma) * uint64_t(epsilon) << std::endl;
 
 	return 0;

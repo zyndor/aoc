@@ -1,10 +1,5 @@
-#include <algorithm>
+#include "utils.h"
 #include <iostream>
-#include <fstream>
-#include <numeric>
-#include <cstring>
-#include <cstdio>
-#include <cassert>
 
 int main(int argc, char** argv)
 {
@@ -18,10 +13,8 @@ int main(int argc, char** argv)
 	std::string line;
 
 	std::vector<uint32_t> samples;
-
 	uint32_t digits = 0;
-	while (std::getline(file, line))
-	{
+	ReadAllLines(file, [&digits, &samples](std::string const& line) {
 		digits = std::max<uint32_t>(digits, line.size());
 
 		uint32_t bits = 0;
@@ -33,7 +26,7 @@ int main(int argc, char** argv)
 		}
 
 		samples.push_back(sample);
-	}
+	});
 
 	auto countBits = [](uint32_t bits, std::vector<uint32_t>& samples){
 		return std::accumulate(samples.begin(), samples.end(), 0ul, [bits](auto s, auto t){
