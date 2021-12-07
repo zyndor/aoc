@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include <bitset>
+#include <numeric>
 #include <cstring>
 #include <cstdio>
 #include <cassert>
@@ -35,45 +35,35 @@ int main(int argc, char** argv)
 		samples.push_back(sample);
 	}
 
-	auto oxygen = samples;
-	for (auto bits = digits; bits-- > 0 && oxygen.size() > 1;)
+	auto countBits = [](uint32_t bits, std::vector<uint32_t>& samples){
+		return std::accumulate(samples.begin(), samples.end(), 0ul, [bits](auto s, auto t){
+			return s + ((t >> bits) & 1);
+		});
+	};
+
+	auto filter = [](uint32_t bits, uint32_t bit, std::vector<uint32_t>& samples){
+		samples.erase(std::remove_if(samples.begin(), samples.end(), [bits, bit](auto s){
+			return ((s >> bits) & 1) != bit;
+		}), samples.end());
+	};
+
+	auto o2 = samples;
+	for (auto bits = digits; bits-- > 0 && o2.size() > 1;)
 	{
-		auto bitCount = 0;
-		for (auto& s : oxygen)
-		{
-			bitCount += (s >> bits) & 1;
-		}
-
-		auto bit = (bitCount >= ((oxygen.size() + 1) / 2));
-		std::cout << "bit " << bits << ": " << bitCount << " / " << oxygen.size() <<
-			" -> " << bit << std::endl;
-
-		oxygen.erase(std::remove_if(oxygen.begin(), oxygen.end(), [bits, bit](uint32_t d){
-			return ((d >> bits) & 1) != bit;
-		}), oxygen.end());
+		size_t bitCount{ countBits(bits, o2) };
+		auto bit{ bitCount >= ((o2.size() + 1) / 2) };
+		filter(bits, bit, o2);
 	}
 
 	auto co2 = samples;
 	for (auto bits = digits; bits-- > 0 && co2.size() > 1;)
 	{
-		auto bitCount = 0;
-		for (auto& s : co2)
-		{
-			bitCount += (s >> bits) & 1;
-		}
-
-		auto bit = (bitCount < ((co2.size() + 1) / 2));
-		std::cout << "bit " << bits << ": " << bitCount << " / " << co2.size() <<
-			" -> " << bit << std::endl;
-
-		co2.erase(std::remove_if(co2.begin(), co2.end(), [bits, bit](uint32_t d){
-			return ((d >> bits) & 1) != bit;
-		}), co2.end());
+		size_t bitCount{ countBits(bits, co2) };
+		auto bit{ bitCount < ((co2.size() + 1) / 2) };
+		filter(bits, bit, co2);
 	}
 
-	std::cout << "o2: " << oxygen[0] << " (" << std::bitset<12>(oxygen[0]) << ")" << std::endl;
-	std::cout << "co2: " << co2[0] << " (" << std::bitset<12>(co2[0]) << ")" << std::endl;
-	std::cout << oxygen[0] * co2[0] << std::endl;
+	std::cout << o2[0] * co2[0] << std::endl;
 
 	return 0;
 }
