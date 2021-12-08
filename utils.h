@@ -43,3 +43,9 @@ void ReadAllLines(std::ifstream& fin, std::function<void(std::string const&)> fn
 		fn(line);
 	}
 }
+
+template <typename T>
+T Reduce(std::vector<T> const& in, std::function<T(T, T)> fn, T init = {})
+{
+	return std::accumulate(in.begin(), in.end(), init, fn);
+}
