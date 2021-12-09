@@ -8,6 +8,18 @@
 #include <vector>
 #include <cstdint>
 
+inline
+int32_t CountBits(uint32_t v)
+{
+        uint32_t n = 0;
+        while (v)
+        {
+                ++n;
+                v &= v - 1;
+        }
+        return n;
+}
+
 template <typename T>
 uint32_t ReadInts(std::string const& line, std::function<void(T)> fn, char delimiter = ',')
 {
@@ -35,6 +47,7 @@ uint32_t ReadInts(std::string const& line, std::function<void(T)> fn, char delim
 	return errs;
 }
 
+inline
 void ReadAllLines(std::ifstream& fin, std::function<void(std::string const&)> fn)
 {
 	std::string line;
