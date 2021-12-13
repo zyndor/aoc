@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 
 	std::ifstream file(argv[1]);
 
-	uint32_t last = 0;
+	uint32_t last = 1 << 31;
 	uint32_t result = 0;
 	ReadAllLines(file, [&last, &result](std::string const& line){
 		uint32_t sample = atoi(line.c_str());

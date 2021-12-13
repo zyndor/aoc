@@ -11,26 +11,18 @@ int main(int argc, char** argv)
 
 	std::ifstream file(argv[1]);
 
-	uint32_t samples[4] {};
-	uint32_t readings = 0;
+	const uint32_t max = 1 << 31;
+	uint32_t samples[] { max, max, max, max };
 	uint32_t result = 0;
-	ReadAllLines(file, [&samples, &readings, &result](std::string const& line) {
-		samples[readings] = atoi(line.c_str());
-
-		for (auto s: samples)
+	ReadAllLines(file, [&samples, &result](std::string const& line) {
+		for (int i = 0; i < 3; ++i)
 		{
-			std::cout << s << "\t";
+			samples[i] = samples[i + 1];
 		}
-		std::cout << std::endl;
 
-		result += (samples[1] + samples[2] + samples[3]) >
-			(samples[0] + samples[1] + samples[2]);
+		samples[3] = atoi(line.c_str());
 
-		if (readings == 3)
-		{
-			std::copy(samples + 1, samples + 4, samples); 
-		}
-		readings += readings < 3;
+		result += samples[3] > samples[0];
 	});
 
 	std::cout << result << std::endl;
